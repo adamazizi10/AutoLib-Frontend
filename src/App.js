@@ -1,24 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar/Navbar';
+import Home from './components/Home';
+import SearchAndBorrow from './components/SearchAndBorrow';
+import Profile from './components/Profile';
+import Login from './components/Login';
+import Register from './components/Register';
+import { useState } from 'react';
+
 
 function App() {
+  const [userInfo, setUserInfo] = useState({})
+  const [books, setBooks] = useState({})
+  const [currentState, setCurrentState] = useState('Login');
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar setUserInfo={setUserInfo} userInfo={userInfo} setCurrentState={setCurrentState}/>
+      {currentState === 'Home' && <Home setCurrentState={setCurrentState} userInfo={userInfo}/>}
+      {currentState === 'SearchAndBorrow' && <SearchAndBorrow userInfo={userInfo} books={books} setBooks={setBooks} setCurrentState={setCurrentState}/>}
+      {currentState === 'Profile' && <Profile userInfo={userInfo} setCurrentState={setCurrentState}/>}
+      {currentState === 'Login' && <Login setUserInfo={setUserInfo} setCurrentState={setCurrentState}/>}
+      {currentState === 'Register' && <Register setUserInfo={setUserInfo} setCurrentState={setCurrentState}/>}
+    </>
   );
 }
 
