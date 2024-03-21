@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+
 const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -126,9 +127,10 @@ const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
             </div>
           </div>
         ) : (
-          <p style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center', color: 'red' }}>No book or author found by that name</p>
+          ''
         )}
       </div>
+      <div style={{ height: '20px' }}></div>
     </>
   );
 

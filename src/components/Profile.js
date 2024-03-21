@@ -105,11 +105,8 @@ const Profile = ({ userInfo }) => {
           </div>
         )}
       </div>
+      <div style={{ height: '150px' }}></div>
     </div>
-
-
-
-
   );
 };
 
