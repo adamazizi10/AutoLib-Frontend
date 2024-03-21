@@ -29,9 +29,12 @@ const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
       const response = await fetch('http://localhost:3001/books');
       if (response.ok) {
         const data = await response.json();
-        console.log('data from fetch books in SEARCHANDBORROW: ', data)
-        setBooks(data);
-        setFilteredBooks(data);
+        if (Array.isArray(data)) { // Check if the response is an array
+          setBooks(data);
+          setFilteredBooks(data);
+        } else {
+          console.error('Received unexpected response:', data);
+        }
       } else {
         console.error('Failed to fetch books');
       }
@@ -69,49 +72,66 @@ const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
 
 
   return (
-    <div>
-      <h2>SearchAndBorrow</h2>
-      <input
-        type="text"
-        placeholder="Search by title or author"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      {Array.isArray(filteredBooks) && filteredBooks.length > 0 ? (
-        <div>
-          <h3>All Books</h3>
-          <ul>
-            {filteredBooks.map((book) => (
-              <li key={book.id}>
-                <strong>Title:</strong> {book.title}, <strong>Author:</strong> {book.author},
-                {book.borrowed_by && book.borrowed_by_username ? (
-                  book.borrowed_by_username === userInfo.username ? (
-                    <span>
-                      <strong>Status: </strong>Borrowed by {book.borrowed_by_username}
-                    </span>
-                  ) : (
-                    <span>
-                      <strong>Status: </strong>Borrowed by Another User
-                    </span>
-                  )
-                ) : (
-                  <span>
-                    <strong>Status:</strong> {'Available'}
-                  </span>
-                )}
-                , <strong>Expires:</strong> {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}
-                {userInfo && !book.borrowed_by && (
-                  <button onClick={() => handleBorrow(book.id)}>Borrow</button>
-                )}
-              </li>
-            ))}
-          </ul>
+    <>
+      <div>
+        <div className="input-group mb-3 mt-3" style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div className="input-group-prepend">
+            <span className="input-group-text" id="inputGroup-sizing-default">Search</span>
+          </div>
+          <input type="text"
+            className="form-control"
+            placeholder="Search by title or author"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default" />
         </div>
-      ) : (
-        <p>No books available</p>
-      )}
-    </div>
+        {Array.isArray(filteredBooks) && filteredBooks.length > 0 ? (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', maxWidth: '1280px', padding: '0' }}>
+              {filteredBooks.map((book, index) => (
+                <div className="card" style={{ width: "18rem" }} key={book.id}>
+                  <img
+                  height={200}
+                  width={200}
+                   src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}// Dynamically generate image source
+                    className="card-img-top"
+                    alt={`book${(index % 8) + 1}.jpg`}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{book.title}</h5>
+                    <h6 className="card-title">Author: {book.author}</h6>
+                    <h6 className="card-title">Status: {book.borrowed_by && book.borrowed_by_username ? (
+                      book.borrowed_by_username === userInfo.username ? (
+                        <span>Borrowed by {book.borrowed_by_username}</span>
+                      ) : (
+                        <span>Borrowed by Another User</span>
+                      )
+                    ) : (
+                      <span>Available</span>
+                    )}</h6>
+                    <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                    {userInfo && !book.borrowed_by && (
+                      <button href="#" className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+
+
+              {filteredBooks.length > 4 && Array((4 - (filteredBooks.length - 4) % 4) % 4).fill(0).map((_, index) => (
+                <div key={`empty-${index}`} style={{ width: '18rem' }}></div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center', color: 'red' }}>No book or author found by that name</p>
+        )}
+      </div>
+    </>
   );
+
 
 };
 

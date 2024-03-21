@@ -32,6 +32,7 @@ const Home = ({ userInfo }) => {
           const data = await response.json();
           const filtered = data.filter(book => !(book.borrowed_by && book.borrowed_by_username) && authorNames.includes(book.author));
           setFilteredBooks(filtered);
+          console.log('filtered books in home', filteredBooks)
           const theRest = data.filter(book => !filtered.some(filteredBook => filteredBook.id === book.id) && !(book.borrowed_by && book.borrowed_by_username));
           setRestOfTheBooks(theRest);
         } else {
@@ -83,33 +84,72 @@ const Home = ({ userInfo }) => {
 
   return (
     <div>
-      <h2>Home</h2>
+
+      {(!filteredBooks || !filteredBooks.length) ?
+        ('') : (
+          <div>
+            <h1 className='mt-4' style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>Recommended Books Based on your Borrow History</h1>
+            <div className='mt-4' style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', maxWidth: '1280px', padding: '0' }}>
+                {filteredBooks.map((book, index) => (
+                  <div className="card" style={{ width: "18rem" }} key={book.id}>
+                    <img
+                      height={200}
+                      width={200}
+                      src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}// Dynamically generate image source
+                      className="card-img-top"
+                      alt={`book${(index % 8) + 1}.jpg`} />
+                    <div className="card-body">
+                      <h5 className="card-title">{book.title}</h5>
+                      <h6 className="card-title">Author: {book.author}</h6>
+                      <h6 className="card-title">Status: {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}</h6>
+                      <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                      {userInfo && !book.borrowed_by && (
+                        <button className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {filteredBooks.length > 4 && Array((4 - (filteredBooks.length - 4) % 4) % 4).fill(0).map((_, index) => (
+                  <div key={`empty-${index}`} style={{ width: '18rem' }}></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+
       <div>
-        <h3>Books by Authors You've Borrowed</h3>
-        <ul>
-          {filteredBooks.map(book => (
-            <li key={book.id}>
-              <strong>Title:</strong> {book.title}, <strong>Author:</strong> {book.author}, <strong>Borrowed By:</strong> {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}, <strong>Expires:</strong> {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}
-              {userInfo && !book.borrowed_by && (
-                <button onClick={() => handleBorrow(book.id)}>Borrow</button>
-              )}
-            </li>
-          ))}
-        </ul>
+        <h1 className='mt-4' style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>Other Books</h1>
+        <div className='mt-4' style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', maxWidth: '1280px', padding: '0' }}>
+            {restOfTheBooks.map((book, index) => (
+              <div className="card" style={{ width: "18rem" }} key={book.id}>
+                <img
+                  height={200}
+                  width={200}
+                  src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}// Dynamically generate image source
+                  className="card-img-top"
+                  alt={`book${(index % 8) + 1}.jpg`}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{book.title}</h5>
+                  <h6 className="card-title">Author: {book.author}</h6>
+                  <h6 className="card-title">Status: {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}</h6>
+                  <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                  {userInfo && !book.borrowed_by && (
+                    <button className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>
+                  )}
+                </div>
+              </div>
+            ))}
+            {restOfTheBooks.length > 4 && Array((4 - (filteredBooks.length - 4) % 4) % 4).fill(0).map((_, index) => (
+              <div key={`empty-${index}`} style={{ width: '18rem' }}></div>
+            ))}
+          </div>
+        </div>
       </div>
-      <div>
-        <h3>Other Books</h3>
-        <ul>
-          {restOfTheBooks.map(book => (
-            <li key={book.id}>
-              <strong>Title:</strong> {book.title}, <strong>Author:</strong> {book.author}, <strong>Borrowed By:</strong> {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}, <strong>Expires:</strong> {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}
-              {userInfo && !book.borrowed_by && (
-                <button onClick={() => handleBorrow(book.id)}>Borrow</button>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+
     </div>
   );
 };

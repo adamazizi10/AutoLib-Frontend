@@ -67,20 +67,49 @@ const Profile = ({ userInfo }) => {
 
   return (
     <div>
-      <div>Username: {userInfo.username}</div>
-      <div>
-        <h2>User's Borrowed Books:</h2>
-        <ul>
-          {userBooks.map(book => (
-            <li key={book.id}>
-              <strong>Title:</strong> {book.title}, <strong>Author:</strong> {book.author}, <strong>Expires:</strong> {book.expires}
-              <button onClick={() => renewBook(book.id)}>Renew</button>
-              <button onClick={() => returnBook(book.id)}>Return</button>
-            </li>
-          ))}
-        </ul>
+      <h1 className='mt-4' style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>Your Current Books</h1>
+      <div className='mt-4' style={{ display: 'flex', justifyContent: 'center' }}>
+        {userBooks.length === 0 ? (
+          <h6 style={{ maxWidth: '1280px', textAlign: 'center' }}>You have not borrowed any books recently.</h6>
+        ) : (
+          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', maxWidth: '1280px', padding: '0' }}>
+            {userBooks.map((book, index) => (
+              <div className="card" style={{ width: "18rem" }} key={book.id}>
+                <img
+                  height={200}
+                  width={200}
+                  src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}
+                  className="card-img-top"
+                  alt={`book${(index % 8) + 1}.jpg`}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{book.title}</h5>
+                  <h6 className="card-title">Author: {book.author}</h6>
+                  <h6 className="card-title">Expires: {book.expires}</h6>
+                  <div className="row">
+                    <div className="col-6 pr-1">
+                      <button href="#" className="btn btn-primary btn-md btn-block" onClick={() => renewBook(book.id)}>Renew</button>
+                    </div>
+                    <div className="col-6 pl-1">
+                      <button href="#" className="btn btn-primary btn-md btn-block" onClick={() => returnBook(book.id)}>Return</button>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            ))}
+            {userBooks.length > 4 && Array((4 - (userBooks.length - 4) % 4) % 4).fill(0).map((_, index) => (
+              <div key={`empty-${index}`} style={{ width: '18rem' }}></div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
+
+
+
+
   );
 };
 
