@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import {REACT_APP_REGISTER} from './Routes'
 
 const Register = ({ setUserInfo, setCurrentState }) => {
   const [username, setUsername] = useState('');
@@ -18,7 +18,7 @@ const Register = ({ setUserInfo, setCurrentState }) => {
       return;
     }
 
-    const response = await fetch('http://localhost:3001/register', {
+    const response = await fetch(`${REACT_APP_REGISTER}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import {REACT_APP_LOGIN} from './Routes'
 
 const Login = ({ setUserInfo, setCurrentState }) => {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ const Login = ({ setUserInfo, setCurrentState }) => {
       return;
     }
 
-    const response = await fetch('http://localhost:3001/login', {
+    const response = await fetch(`${REACT_APP_LOGIN}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

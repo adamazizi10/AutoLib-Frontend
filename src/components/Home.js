@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { REACT_APP_USER_BOOKS, REACT_APP_BOOKS, REACT_APP_BORROW } from './Routes.js'
+import book1Image from '../Images/book1.jpg';
+import book2Image from '../Images/book2.jpg';
+import book3Image from '../Images/book3.jpg';
+import book4Image from '../Images/book4.jpg';
+import book5Image from '../Images/book5.jpg';
+import book6Image from '../Images/book6.jpg';
+import book7Image from '../Images/book7.jpg';
+import book8Image from '../Images/book8.jpg';
 
-
+const bookImages = [
+  book1Image,
+  book2Image,
+  book3Image,
+  book4Image,
+  book5Image,
+  book6Image,
+  book7Image,
+  book8Image,
+];
 const Home = ({ userInfo }) => {
   const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -9,7 +27,7 @@ const Home = ({ userInfo }) => {
   useEffect(() => {
     const fetchBorrowedBooks = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/user/books/${userInfo.user_id}`);
+        const response = await fetch(`${REACT_APP_USER_BOOKS}${userInfo.user_id}`);
         if (response.ok) {
           const data = await response.json();
           setBorrowedBooks(data);
@@ -28,7 +46,7 @@ const Home = ({ userInfo }) => {
     const fetchFilteredBooks = async () => {
       try {
         const authorNames = borrowedBooks.map(book => book.author);
-        const response = await fetch('http://localhost:3001/books');
+        const response = await fetch(`${REACT_APP_BOOKS}`);
         if (response.ok) {
           const data = await response.json();
           const filtered = data.filter(book => !(book.borrowed_by && book.borrowed_by_username) && authorNames.includes(book.author));
@@ -49,7 +67,7 @@ const Home = ({ userInfo }) => {
 
   const handleBorrow = async (bookId) => {
     try {
-      const response = await fetch(`http://localhost:3001/borrow/${bookId}`, {
+      const response = await fetch(`${REACT_APP_BORROW}${bookId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -139,9 +157,9 @@ const Home = ({ userInfo }) => {
                     <img
                       height={200}
                       width={200}
-                      src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}// Dynamically generate image source
+                      src={bookImages[index % bookImages.length]} // Loop through bookImages array
                       className="card-img-top"
-                      alt={`book${(index % 8) + 1}.jpg`} />
+                      alt={`book${(index % bookImages.length) + 1}.jpg`} />
                     <div className="card-body">
                       <h5 className="card-title">{book.title}</h5>
                       <h6 className="card-title">Author: {book.author}</h6>
@@ -171,9 +189,9 @@ const Home = ({ userInfo }) => {
                 <img
                   height={200}
                   width={200}
-                  src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}// Dynamically generate image source
+                  src={bookImages[index % bookImages.length]} // Loop through bookImages array
                   className="card-img-top"
-                  alt={`book${(index % 8) + 1}.jpg`}
+                  alt={`book${(index % bookImages.length) + 1}.jpg`}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{book.title}</h5>

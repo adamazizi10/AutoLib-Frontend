@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import { REACT_APP_USER_BOOKS, REACT_APP_RENEW, REACT_APP_RETURN } from './Routes'
+import book1Image from '../Images/book1.jpg';
+import book2Image from '../Images/book2.jpg';
+import book3Image from '../Images/book3.jpg';
+import book4Image from '../Images/book4.jpg';
+import book5Image from '../Images/book5.jpg';
+import book6Image from '../Images/book6.jpg';
+import book7Image from '../Images/book7.jpg';
+import book8Image from '../Images/book8.jpg';
+
+const bookImages = [
+  book1Image,
+  book2Image,
+  book3Image,
+  book4Image,
+  book5Image,
+  book6Image,
+  book7Image,
+  book8Image,
+];
 
 const Profile = ({ userInfo }) => {
   const [userBooks, setUserBooks] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/user/books/${userInfo.user_id}`)
+    fetch(`${REACT_APP_USER_BOOKS}${userInfo.user_id}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch user books');
@@ -21,7 +41,7 @@ const Profile = ({ userInfo }) => {
 
   const renewBook = (bookId) => {
     // Implement renew book functionality
-    fetch(`http://localhost:3001/renew/${bookId}`, {
+    fetch(`${REACT_APP_RENEW}${bookId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -33,7 +53,7 @@ const Profile = ({ userInfo }) => {
           throw new Error('Failed to renew book');
         }
         // Refresh user's borrowed books after renewing
-        return fetch(`http://localhost:3001/user/books/${userInfo.user_id}`);
+        return fetch(`${REACT_APP_USER_BOOKS}${userInfo.user_id}`);
       })
       .then(response => response.json())
       .then(data => {
@@ -46,7 +66,7 @@ const Profile = ({ userInfo }) => {
 
   const returnBook = (bookId) => {
     // Implement return book functionality
-    fetch(`http://localhost:3001/return/${bookId}`, {
+    fetch(`${REACT_APP_RETURN}${bookId}`, {
       method: 'PUT'
     })
       .then(response => {
@@ -54,7 +74,7 @@ const Profile = ({ userInfo }) => {
           throw new Error('Failed to return book');
         }
         // Refresh user's borrowed books after returning
-        return fetch(`http://localhost:3001/user/books/${userInfo.user_id}`);
+        return fetch(`${REACT_APP_USER_BOOKS}${userInfo.user_id}`);
       })
       .then(response => response.json())
       .then(data => {
@@ -78,9 +98,9 @@ const Profile = ({ userInfo }) => {
                 <img
                   height={200}
                   width={200}
-                  src={`${process.env.PUBLIC_URL}/Images/book${(index % 8) + 1}.jpg`}
+                  src={bookImages[index % bookImages.length]} // Loop through bookImages array
                   className="card-img-top"
-                  alt={`book${(index % 8) + 1}.jpg`}
+                  alt={`book${(index % bookImages.length) + 1}.jpg`}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{book.title}</h5>
