@@ -1,5 +1,5 @@
 //Live
-export const BACKEND_URL = 'https://libraryprojectbackendcoe892.azurewebsites.net/'; 
+export const BACKEND_URL = 'https://arcane-retreat-91028-5c84f2841f76.herokuapp.com/'; 
 //Dev
 // export const BACKEND_URL = 'http://localhost:3001/';
 
