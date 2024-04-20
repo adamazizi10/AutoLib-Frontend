@@ -34,18 +34,3 @@ const Navbar = ({ userInfo, setCurrentState }) => {
 };
 
 export default Navbar;
-
-
-
-
-
-{/* // ) : (
-            //     <>
-            //         <div className={`navbar-item navbara-and-dropdown-items`} onClick={() => setCurrentState('Login')} >
-            //             Login
-            //         </div>
-            //         <div className={`navbar-item navbara-and-dropdown-items`} onClick={() => setCurrentState('Register')}>
-            //             Register
-            //         </div>
-            //     </>
-            // )} */}

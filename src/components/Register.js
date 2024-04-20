@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {REACT_APP_REGISTER} from './Routes'
+
+const REACT_APP_REGISTER = process.env.REACT_APP_REGISTER;
 
 const Register = ({ setUserInfo, setCurrentState }) => {
   const [username, setUsername] = useState('');

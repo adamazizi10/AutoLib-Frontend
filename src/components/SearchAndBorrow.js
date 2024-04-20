@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { REACT_APP_BOOKS, REACT_APP_BORROW } from './Routes'
 import book1Image from '../Images/book1.jpg';
 import book2Image from '../Images/book2.jpg';
 import book3Image from '../Images/book3.jpg';
@@ -8,6 +7,9 @@ import book5Image from '../Images/book5.jpg';
 import book6Image from '../Images/book6.jpg';
 import book7Image from '../Images/book7.jpg';
 import book8Image from '../Images/book8.jpg';
+
+const REACT_APP_BOOKS = process.env.REACT_APP_BOOKS;
+const REACT_APP_BORROW = process.env.REACT_APP_BORROW;
 
 const bookImages = [
   book1Image,

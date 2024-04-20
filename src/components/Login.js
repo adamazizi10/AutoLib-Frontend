@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {REACT_APP_LOGIN} from './Routes'
+
+const REACT_APP_LOGIN = process.env.REACT_APP_LOGIN;
 
 const Login = ({ setUserInfo, setCurrentState }) => {
   const [username, setUsername] = useState('');
