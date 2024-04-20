@@ -67,7 +67,7 @@ const Register = ({ setUserInfo, setCurrentState }) => {
                           </div>
                           <form onSubmit={(e) => {
                             e.preventDefault(); // Prevent default form submission behavior
-                            handleRegister(); // Call your registration function
+                            handleRegister(); // Call registration function
                           }}>
                             <div className="row gy-3 overflow-hidden">
                               <div className="col-12">
