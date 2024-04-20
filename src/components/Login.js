@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const REACT_APP_LOGIN = process.env.REACT_APP_LOGIN;
+const BACKEND_URL = process.env.REACT_APP_API_BASE_URL
+const REACT_APP_LOGIN = `${BACKEND_URL}/login`;
 
 const Login = ({ setUserInfo, setCurrentState }) => {
   const [username, setUsername] = useState('');

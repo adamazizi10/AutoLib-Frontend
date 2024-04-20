@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const REACT_APP_REGISTER = process.env.REACT_APP_REGISTER;
+const BACKEND_URL = process.env.REACT_APP_API_BASE_URL
+const REACT_APP_REGISTER = `${BACKEND_URL}/register`;
 
 const Register = ({ setUserInfo, setCurrentState }) => {
   const [username, setUsername] = useState('');

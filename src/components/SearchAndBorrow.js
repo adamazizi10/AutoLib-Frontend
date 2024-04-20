@@ -8,8 +8,9 @@ import book6Image from '../Images/book6.jpg';
 import book7Image from '../Images/book7.jpg';
 import book8Image from '../Images/book8.jpg';
 
-const REACT_APP_BOOKS = process.env.REACT_APP_BOOKS;
-const REACT_APP_BORROW = process.env.REACT_APP_BORROW;
+const BACKEND_URL = process.env.REACT_APP_API_BASE_URL
+const REACT_APP_BOOKS = `${BACKEND_URL}/books`;
+const REACT_APP_BORROW = `${BACKEND_URL}/borrow/`;
 
 const bookImages = [
   book1Image,
