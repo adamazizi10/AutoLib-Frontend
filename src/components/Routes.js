@@ -1,5 +1,4 @@
-//Live
-const BACKEND_URL = process.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.BACKEND_URL;
+const BACKEND_URL = process.env.BACKEND_URL;
 
 export const REACT_APP_BOOKS = `${BACKEND_URL}/books`;
 export const REACT_APP_USER_BOOKS = `${BACKEND_URL}/user/books/`;
