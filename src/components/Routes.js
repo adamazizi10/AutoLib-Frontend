@@ -1,7 +1,7 @@
 //Live
 export const BACKEND_URL = 'https://arcane-retreat-91028-5c84f2841f76.herokuapp.com/'; 
-//Dev
-// export const BACKEND_URL = 'http://localhost:3001/';
+
+const BACKEND_URL = process.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.BACKEND_URL;
 
 export const REACT_APP_BOOKS = `${BACKEND_URL}/books`;
 export const REACT_APP_USER_BOOKS = `${BACKEND_URL}/user/books/`;
