@@ -215,6 +215,7 @@ const Home = ({ userInfo }) => {
                   <h6 className="card-title">Author: {book.author}</h6>
                   <h6 className="card-title">Status: {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}</h6>
                   <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                  {/* <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6> */}
                   <p style={{color: 'red'}}>{error === 'three books' && failedBorrowId === book.id && 'You have already borrowed three books. Return at least one book to borrow this one.'}</p>
                   {userInfo && !book.borrowed_by && (
                     <button className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>

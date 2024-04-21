@@ -109,7 +109,8 @@ const Profile = ({ userInfo }) => {
                 <div className="card-body">
                   <h5 className="card-title">{book.title}</h5>
                   <h6 className="card-title">Author: {book.author}</h6>
-                  <h6 className="card-title">Expires: {book.expires}</h6>
+                  <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+
                   <div className="row">
                     <div className="col-6 pr-1">
                       <button href="#" className="btn btn-primary btn-md btn-block" onClick={() => renewBook(book.id)}>Renew</button>
