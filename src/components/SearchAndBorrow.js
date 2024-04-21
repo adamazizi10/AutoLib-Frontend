@@ -26,6 +26,8 @@ const bookImages = [
 const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
+  const [error, setError] = useState('')
+  const [failedBorrowId, setFailedBorrowId] = useState()
 
   useEffect(() => {
     fetchBooks();
@@ -85,12 +87,21 @@ const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
           return book;
         });
         setFilteredBooks(updatedBooks);
+        setError('');
+        setFailedBorrowId()
       } else {
-        console.error('Failed to borrow book');
+        const errorData = await response.json();
+        if (response.status === 400 && errorData.error === 'User has already borrowed three books') {
+          setError('three books');
+          setFailedBorrowId(errorData.book_id)
+        } else {
+          console.error('Failed to borrow book:', errorData.error); // Log the specific error message returned by the backend
+        }
       }
     } catch (error) {
       console.error('Error borrowing book:', error);
     }
+    
   };
 
 
@@ -134,6 +145,7 @@ const SearchAndBorrow = ({ userInfo, books, setBooks }) => {
                       <span>Available</span>
                     )}</h6>
                     <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                    <p style={{color: 'red'}}>{error === 'three books' && failedBorrowId === book.id && 'You have already borrowed three books. Return at least one book to borrow this one.'}</p>
                     {userInfo && !book.borrowed_by && (
                       <button href="#" className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>
                     )}

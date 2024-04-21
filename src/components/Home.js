@@ -27,6 +27,8 @@ const Home = ({ userInfo }) => {
   const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [restOfTheBooks, setRestOfTheBooks] = useState([])
+  const [error, setError] = useState('')
+  const [failedBorrowId, setFailedBorrowId] = useState()
 
   useEffect(() => {
     const fetchBorrowedBooks = async () => {
@@ -80,7 +82,7 @@ const Home = ({ userInfo }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        // Update local state to reflect the borrowed book
+        // Update local state to reflect the borrowed book for filtered books
         const updatedFilteredBooks = filteredBooks.map(book => {
           if (book.id === bookId) {
             return { ...book, borrowed_by: userInfo.user_id, borrowed_by_username: data.borrowed_by_username, expires: data.expires };
@@ -89,6 +91,7 @@ const Home = ({ userInfo }) => {
         });
         setFilteredBooks(updatedFilteredBooks);
 
+        // Update local state to reflect the borrowed book for rest of the books
         const updatedRestOfTheBooks = restOfTheBooks.map(book => {
           if (book.id === bookId) {
             return { ...book, borrowed_by: userInfo.user_id, borrowed_by_username: data.borrowed_by_username, expires: data.expires };
@@ -96,13 +99,22 @@ const Home = ({ userInfo }) => {
           return book;
         });
         setRestOfTheBooks(updatedRestOfTheBooks);
+        setError('');
+        setFailedBorrowId()
       } else {
-        console.error('Failed to borrow book');
+        const errorData = await response.json();
+        if (response.status === 400 && errorData.error === 'User has already borrowed three books') {
+          setError('three books');
+          setFailedBorrowId(errorData.book_id)
+        } else {
+          console.error('Failed to borrow book:', errorData.error); // Log the specific error message returned by the backend
+        }
       }
     } catch (error) {
       console.error('Error borrowing book:', error);
     }
   };
+
 
 
   return (
@@ -169,6 +181,7 @@ const Home = ({ userInfo }) => {
                       <h6 className="card-title">Author: {book.author}</h6>
                       <h6 className="card-title">Status: {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}</h6>
                       <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                      <p style={{color: 'red'}}>{error === 'three books' && failedBorrowId === book.id && 'You have already borrowed three books. Return at least one book to borrow this one.'}</p>
                       {userInfo && !book.borrowed_by && (
                         <button className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>
                       )}
@@ -202,6 +215,7 @@ const Home = ({ userInfo }) => {
                   <h6 className="card-title">Author: {book.author}</h6>
                   <h6 className="card-title">Status: {book.borrowed_by && book.borrowed_by_username ? book.borrowed_by_username : 'Available'}</h6>
                   <h6 className="card-title">Expires: {book.expires ? new Date(book.expires).toLocaleDateString() + ', ' + new Date(book.expires).toLocaleTimeString() : 'Not set'}</h6>
+                  <p style={{color: 'red'}}>{error === 'three books' && failedBorrowId === book.id && 'You have already borrowed three books. Return at least one book to borrow this one.'}</p>
                   {userInfo && !book.borrowed_by && (
                     <button className="btn btn-primary" onClick={() => handleBorrow(book.id)}>Borrow</button>
                   )}
