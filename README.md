@@ -2,7 +2,7 @@
 Note: This is the frontend repository. You can access the backend here: [https://github.com/adamazizi10/AutoLib-Backend](https://github.com/adamazizi10/AutoLib-Backend)
 ## Description
 This is a fully automated public library system developed using React.js for the frontend and flask for the backend. It has a book recommendation algorithm and fully automated features for searching, borrowing, renewing and returning books.
-* Cloud Hosting Platform: Azure, Vercel, Heroku
+* Cloud Hosting Platforms: Azure, Vercel, Heroku
 * Demo Username: demouser
 * Demo Password: demouser
 
