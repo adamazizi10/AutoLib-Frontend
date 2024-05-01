@@ -8,7 +8,7 @@ This is a fully automated public library system developed using React.js for the
 
   
 ## Landing Page - Login
-<img width="1512" alt="image" src="https://github.com/adamazizi10/autolib-frontend/assets/106051947/5b8aa912-f5ac-44d9-bad6-56bef8c0540a">
+<img width="1512" alt="image landing" src="https://github.com/adamazizi10/autolib-frontend/assets/106051947/5b8aa912-f5ac-44d9-bad6-56bef8c0540a">
 
 
 ## Homepage
