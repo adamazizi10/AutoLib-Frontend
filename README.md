@@ -3,8 +3,8 @@ Note: This is the frontend repository. You can access the backend here: [https:/
 ## Description
 This is a fully automated public library system developed using React.js for the frontend and flask for the backend. It has a book recommendation algorithm and fully automated features for searching, borrowing, renewing and returning books.
 * Cloud Hosting Platforms: Azure, Vercel, Heroku
-* Demo Username: demouser
-* Demo Password: demouser
+* Demo Username: `demouser`
+* Demo Password: `demouser`
 
   
 ## Landing Page - Login
